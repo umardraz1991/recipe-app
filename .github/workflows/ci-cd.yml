@@ -19,8 +19,8 @@ jobs:
       - name: Build Frontend Docker Image
         run: docker build -t recipe-frontend ./frontend
 
-      - name: Run Backend Container (test)
+      - name: Run Backend Container
         run: docker run -d -p 5000:5000 recipe-backend
 
-      - name: Run Frontend Container (test)
+      - name: Run Frontend Container
         run: docker run -d -p 3000:3000 recipe-frontend
