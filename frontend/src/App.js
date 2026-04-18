@@ -190,6 +190,8 @@ const updateRecipe = async (id) => {
       {loading && <p>Loading recipes...</p>}
       {recipes.length === 0 && <p>No recipes found</p>}
       {recipes
+        .slice() // copy array
+        .reverse() // reverse order
   	.filter((recipe) =>
     	recipe.name.toLowerCase().includes(search.toLowerCase())
  	 )
