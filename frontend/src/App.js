@@ -47,6 +47,7 @@ if (!name || !ingredients) {
   alert("Recipe added successfully!");
     setName("");
     setIngredients("");
+    setCategory("");
     fetchRecipes();
   };
 
@@ -67,6 +68,7 @@ const updateRecipe = async (id) => {
   setEditingId(null);
   setName("");
   setIngredients("");
+  setCategory("");
   fetchRecipes();
 };
 
@@ -227,8 +229,9 @@ const updateRecipe = async (id) => {
       {recipes.filter(r =>
   r.name.toLowerCase().includes(search.toLowerCase())
 ).length === 0 && (
-  <p>style={{ color: "#888", textAlign: "center" }}>
-  🔍 No recipes match your search</p>
+  <p style={{ color: "#888", textAlign: "center" }}>
+   🔍 No recipes match your search
+  </p>
 )}
 
 
