@@ -192,12 +192,11 @@ const updateRecipe = async (id) => {
       {recipes.length === 0 && <p>No recipes found</p>}
       {recipes
 	.filter((recipe) =>
-    	recipe.name.toLowerCase().includes(search.toLowerCase())
+    	 recipe.name?.toLowerCase().includes(search.toLowerCase())
  	 )
         .slice() // copy array
         .reverse() // reverse order
-
- 	 .map((recipe) => (
+ 	.map((recipe) => (
         <div
   	 key={recipe._id}
  	 style={{
