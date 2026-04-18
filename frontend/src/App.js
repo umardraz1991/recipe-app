@@ -33,6 +33,7 @@ function App() {
   const addRecipe = async () => {
 if (!name || !ingredients) {
   alert("Please fill all fields");
+  console.log("Search:", search);  
   return;
 }
     await axios.post("http://localhost:5000/recipes", {
@@ -190,11 +191,12 @@ const updateRecipe = async (id) => {
       {loading && <p>Loading recipes...</p>}
       {recipes.length === 0 && <p>No recipes found</p>}
       {recipes
-        .slice() // copy array
-        .reverse() // reverse order
-  	.filter((recipe) =>
+	.filter((recipe) =>
     	recipe.name.toLowerCase().includes(search.toLowerCase())
  	 )
+        .slice() // copy array
+        .reverse() // reverse order
+
  	 .map((recipe) => (
         <div
   	 key={recipe._id}
