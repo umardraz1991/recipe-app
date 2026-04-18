@@ -124,26 +124,6 @@ const updateRecipe = async (id) => {
   Clear Search
 </button>
 
-
-{/* ✅ ADD DROPDOWN EXACTLY HERE */}
-<select
-  value={categoryFilter}
-  onChange={(e) => setCategoryFilter(e.target.value)}
-  style={{
-    padding: "10px",
-    width: "100%",
-    marginBottom: "15px",
-    borderRadius: "5px"
-  }}
->
-  <option value="">Select Category</option>
-  <option value="Italian">Italian</option>
-  <option value="Healthy">Healthy</option>
-  <option value="Fast Food">Fast Food</option>
-  <option value="Dessert">Dessert</option>
-</select>
-	<br /><br />
-
       <input
         placeholder="Recipe name"
 	autoFocus
@@ -247,7 +227,8 @@ const updateRecipe = async (id) => {
       {recipes.filter(r =>
   r.name.toLowerCase().includes(search.toLowerCase())
 ).length === 0 && (
-  <p>No matching recipes found</p>
+  <p>style={{ color: "#888", textAlign: "center" }}>
+  🔍 No recipes match your search</p>
 )}
 
 
@@ -272,12 +253,13 @@ const updateRecipe = async (id) => {
         <div
   	 key={recipe._id}
  	 style={{
-   	 border: "1px solid #eee",
-   	 padding: "15px",
-   	 borderRadius: "10px",
-   	 marginBottom: "15px",
-   	 backgroundColor: "#fafafa",
-   	 boxShadow: "0 2px 5px rgba(0,0,0,0.1)"
+   	 marginRight: "10px",
+  	 padding: "5px 10px",
+ 	 borderRadius: "5px",
+ 	 border: "none",
+ 	 backgroundColor: "#007bff",
+ 	 color: "white",
+ 	 cursor: "pointer"
   	}}
         >
           <h3 style={{ margin: "0 0 5px 0" }}>{recipe.name}</h3>
@@ -325,15 +307,13 @@ display: "inline-block",
       ))}
 <hr />
 
-<p
-  style={{
-    textAlign: "center",
-    marginTop: "20px",
-    color: "#777",
-    fontSize: "14px"
-  }}
->
-  © 2026 Recipe App | Built with React & Node.js
+<p style={{
+  textAlign: "center",
+  marginTop: "20px",
+  color: "#777",
+  fontSize: "13px"
+}}>
+  © 2026 Recipe Manager | Built with React, Node.js & MongoDB
 </p>
     </div>
     </div>
