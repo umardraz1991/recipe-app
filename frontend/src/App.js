@@ -176,6 +176,9 @@ const updateRecipe = async (id) => {
 )}
       <hr style={{ margin: "20px 0" }} />
       <h2 style={{ marginTop: "10px" }}>Recipes ({recipes.length})</h2>
+      {error && (
+        <p style={{ color: "red" }}>{error}</p>
+      )}
       {loading && <p>Loading recipes...</p>}
       {recipes.length === 0 && <p>No recipes found</p>}
       {recipes
