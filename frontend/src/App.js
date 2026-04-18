@@ -279,7 +279,20 @@ const updateRecipe = async (id) => {
         >
           <h3 style={{ margin: "0 0 5px 0" }}>{recipe.name}</h3>
 	  <p style={{ margin: "0 0 10px 0", color: "#555" }}>{recipe.ingredients}</p>
-	  <p style={{ fontSize: "13px", color: "#888" }}>Category: {recipe.category || "General"}</p>
+	  <p style={{ 
+display: "inline-block",
+    padding: "5px 10px",
+    backgroundColor: "#007bff",
+    color: "white",
+    borderRadius: "15px",
+    fontSize: "12px",
+    marginBottom: "10px"
+  }}
+>
+  {recipe.category || "General"}
+</p>
+
+
           <button
   	    onClick={() => {
     	    setEditingId(recipe._id);
