@@ -215,7 +215,11 @@ const updateRecipe = async (id) => {
   	Edit
 	</button>
           <button
-            onClick={() => deleteRecipe(recipe._id)}
+            onClick={
+	      if (window.confirm("Are you sure you want to delete this recipe?")) {
+      		deleteRecipe(recipe._id);
+    	      }
+  	    }}
             style={{ backgroundColor: "red", color: "white" }}
           >
             Delete
