@@ -104,7 +104,6 @@ const updateRecipe = async (id) => {
 >
   Clear Search
 </button>
-	/>
 	<br /><br />
 
       <input
@@ -173,7 +172,7 @@ const updateRecipe = async (id) => {
        </button>
 )}
       <hr style={{ margin: "20px 0" }} />
-      <h2 style={{ marginTop: "10px" }}>Recipes</h2>
+      <h2 style={{ marginTop: "10px" }}>Recipes ({recipes.length})</h2>
       {recipes.length === 0 && <p>No recipes found</p>}
       {recipes
   	.filter((recipe) =>
