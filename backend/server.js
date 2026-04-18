@@ -37,6 +37,15 @@ app.post("/recipes", async (req, res) => {
   res.json(newRecipe);
 });
 
+app.delete("/recipes/:id", async (req, res) => {
+  try {
+    await Recipe.findByIdAndDelete(req.params.id);
+    res.json({ message: "Recipe deleted" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Start server
 app.listen(5000, () => {
   console.log("Server running on port 5000");
