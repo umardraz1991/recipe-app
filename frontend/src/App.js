@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
@@ -6,7 +7,7 @@ function App() {
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [recipes, setRecipes] = useState([]);
-
+  const [editingId, setEditingId] = useState(null);
   // fetch recipes
   const fetchRecipes = async () => {
     const res = await axios.get("http://localhost:5000/recipes");
@@ -34,6 +35,17 @@ function App() {
     fetchRecipes();
   };
 
+const updateRecipe = async (id) => {
+  await axios.put(`http://localhost:5000/recipes/${id}`, {
+    name,
+    ingredients,
+  });
+  setEditingId(null);
+  setName("");
+  setIngredients("");
+  fetchRecipes();
+};
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>Recipe App</h1>
@@ -52,7 +64,15 @@ function App() {
       />
       <br /><br />
 
-      <button onClick={addRecipe}>Add Recipe</button>
+      {editingId ? (
+  	<button onClick={() => updateRecipe(editingId)}>
+    	Update Recipe
+  	</button>
+	) : (
+  	<button onClick={addRecipe}>
+    	Add Recipe
+  	</button>
+	)}
 
       <h2>Recipes</h2>
 
@@ -60,7 +80,15 @@ function App() {
         <div key={recipe._id} style={{ marginBottom: "10px" }}>
           <h3>{recipe.name}</h3>
           <p>{recipe.ingredients}</p>
-
+	  <button
+  	    onClick={() => {
+    	    setEditingId(recipe._id);
+    	    setName(recipe.name);
+    	    setIngredients(recipe.ingredients);
+	   }}
+	>
+  	Edit
+	</button>
           <button
             onClick={() => deleteRecipe(recipe._id)}
             style={{ backgroundColor: "red", color: "white" }}

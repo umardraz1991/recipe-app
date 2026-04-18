@@ -46,6 +46,19 @@ app.delete("/recipes/:id", async (req, res) => {
   }
 });
 
+app.put("/recipes/:id", async (req, res) => {
+  try {
+    const updated = await Recipe.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Start server
 app.listen(5000, () => {
   console.log("Server running on port 5000");
