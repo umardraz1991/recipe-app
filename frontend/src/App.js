@@ -9,6 +9,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("All");
   const [recipes, setRecipes] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [search, setSearch] = useState("");
@@ -121,6 +122,49 @@ const updateRecipe = async (id) => {
 >
   Clear Search
 </button>
+
+<input
+  placeholder="Search recipes..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  style={{
+    padding: "10px",
+    width: "100%",
+    marginBottom: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc"
+  }}
+/>
+
+<button
+  onClick={() => setSearch("")}
+  style={{
+    marginBottom: "15px",
+    padding: "5px 10px",
+    borderRadius: "5px",
+    cursor: "pointer"
+  }}
+>
+  Clear Search
+</button>
+
+{/* ✅ ADD DROPDOWN EXACTLY HERE */}
+<select
+  value={categoryFilter}
+  onChange={(e) => setCategoryFilter(e.target.value)}
+  style={{
+    padding: "10px",
+    width: "100%",
+    marginBottom: "15px",
+    borderRadius: "5px"
+  }}
+>
+  <option value="All">All Categories</option>
+  <option value="Italian">Italian</option>
+  <option value="Healthy">Healthy</option>
+  <option value="Fast Food">Fast Food</option>
+  <option value="Dessert">Dessert</option>
+</select>
 	<br /><br />
 
       <input
@@ -208,7 +252,13 @@ const updateRecipe = async (id) => {
       <h2 style={{ marginTop: "10px" }}>Recipes ({recipes.length})</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {loading && <p>Loading recipes...</p>}
-      {recipes.length === 0 && <p>No recipes found</p>}
+      {recipes.filter(r =>
+  r.name.toLowerCase().includes(search.toLowerCase())
+).length === 0 && (
+  <p>No matching recipes found</p>
+)}
+
+
       {recipes
 	.filter((recipe) =>
     	 recipe.name?.toLowerCase().includes(search.toLowerCase())
