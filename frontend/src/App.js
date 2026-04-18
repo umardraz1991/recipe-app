@@ -48,39 +48,93 @@ const updateRecipe = async (id) => {
 };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Recipe App</h1>
+    <div
+     style={{
+     minHeight: "100vh",
+     backgroundColor: "#f4f6f8",
+     padding: "40px"
+     }}
+    >
+    <div
+     style={{
+     maxWidth: "500px",
+     margin: "auto",
+     backgroundColor: "white",
+     padding: "25px",
+     borderRadius: "10px",
+     boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
+     }}
+    >    
+  <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
+  🍽 Recipe Manager
+</h1>
+  <h3 style={{ marginBottom: "10px" }}>
+  Add / Edit Recipe
+</h3>
+	{editingId && (
+  	 <p style={{ color: "blue", marginBottom: "10px" }}>
+    	   ✏️ Editing existing recipe...
+  	 </p>
+	)}
 	<input
   	  placeholder="Search recipes..."
   	  value={search}
   	  onChange={(e) => setSearch(e.target.value)}
+  	  style={{
+    	  padding: "10px",
+    	  width: "100%",
+    	  marginBottom: "15px",
+    	  borderRadius: "5px",
+    	  border: "1px solid #ccc"
+  	}}
 	/>
 	<br /><br />
 
       <input
         placeholder="Recipe name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+  	value={name}
+  	onChange={(e) => setName(e.target.value)}
+  	style={{
+    	padding: "10px",
+    	width: "100%",
+    	marginBottom: "10px",
+    	borderRadius: "5px",
+    	border: "1px solid #ccc"
+      }}
       />
       <br /><br />
 
       <input
         placeholder="Ingredients"
-        value={ingredients}
-        onChange={(e) => setIngredients(e.target.value)}
+  	value={ingredients}
+  	onChange={(e) => setIngredients(e.target.value)}
+  	style={{
+    	padding: "10px",
+    	width: "100%",
+    	marginBottom: "15px",
+    	borderRadius: "5px",
+    	border: "1px solid #ccc"
+      }}
       />
       <br /><br />
 
-      {editingId ? (
-  	<button onClick={() => updateRecipe(editingId)}>
-    	Update Recipe
-  	</button>
-	) : (
-  	<button onClick={addRecipe}>
-    	Add Recipe
-  	</button>
-	)}
-
+      <button
+  	onClick={editingId ? () => updateRecipe(editingId) : addRecipe}
+  	style={{
+    	padding: "10px",
+    	width: "100%",
+    	backgroundColor: "#28a745",
+    	color: "white",
+    	border: "none",
+    	borderRadius: "5px",
+    	marginBottom: "20px",
+    	cursor: "pointer",
+    	fontWeight: "bold"
+  	}}
+       >	
+  	{editingId ? "Update Recipe" : "Add Recipe"}
+       </button>
+      <hr style={{ margin: "20px 0" }} />
       <h2>Recipes</h2>
 
       {recipes
@@ -88,15 +142,25 @@ const updateRecipe = async (id) => {
     	recipe.name.toLowerCase().includes(search.toLowerCase())
  	 )
  	 .map((recipe) => (
-        <div key={recipe._id} style={{ marginBottom: "10px" }}>
-          <h3>{recipe.name}</h3>
-          <p>{recipe.ingredients}</p>
-	  <button
+        <div
+  	 key={recipe._id}
+ 	 style={{
+   	 border: "1px solid #eee",
+   	 padding: "15px",
+   	 borderRadius: "10px",
+   	 marginBottom: "15px",
+   	 backgroundColor: "#fafafa",
+   	 boxShadow: "0 2px 5px rgba(0,0,0,0.1)"
+  	}}
+        >
+          <h3 style={{ margin: "0 0 5px 0" }}>{recipe.name}</h3>
+	  <p style={{ margin: "0 0 10px 0", color: "#555" }}>{recipe.ingredients}</p>
+          <button
   	    onClick={() => {
     	    setEditingId(recipe._id);
     	    setName(recipe.name);
     	    setIngredients(recipe.ingredients);
-	   }}
+	}}
 	>
   	Edit
 	</button>
@@ -108,6 +172,7 @@ const updateRecipe = async (id) => {
           </button>
         </div>
       ))}
+    </div>
     </div>
   );
 }
