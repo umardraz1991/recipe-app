@@ -8,6 +8,7 @@ function App() {
   const [ingredients, setIngredients] = useState("");
   const [recipes, setRecipes] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [search, setSearch] = useState("");
   // fetch recipes
   const fetchRecipes = async () => {
     const res = await axios.get("http://localhost:5000/recipes");
@@ -49,6 +50,12 @@ const updateRecipe = async (id) => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Recipe App</h1>
+	<input
+  	  placeholder="Search recipes..."
+  	  value={search}
+  	  onChange={(e) => setSearch(e.target.value)}
+	/>
+	<br /><br />
 
       <input
         placeholder="Recipe name"
@@ -76,7 +83,11 @@ const updateRecipe = async (id) => {
 
       <h2>Recipes</h2>
 
-      {recipes.map((recipe) => (
+      {recipes
+  	.filter((recipe) =>
+    	recipe.name.toLowerCase().includes(search.toLowerCase())
+ 	 )
+ 	 .map((recipe) => (
         <div key={recipe._id} style={{ marginBottom: "10px" }}>
           <h3>{recipe.name}</h3>
           <p>{recipe.ingredients}</p>
