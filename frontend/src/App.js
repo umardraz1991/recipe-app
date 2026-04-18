@@ -96,7 +96,7 @@ const updateRecipe = async (id) => {
 </h3>
 	{editingId && (
   	 <p style={{ color: "blue", marginBottom: "10px" }}>
-    	   ✏️ Editing existing recipe...
+    	   ✏️ Editing: {name} ({category})
   	 </p>
 	)}
 <input
@@ -124,30 +124,6 @@ const updateRecipe = async (id) => {
   Clear Search
 </button>
 
-<input
-  placeholder="Search recipes..."
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  style={{
-    padding: "10px",
-    width: "100%",
-    marginBottom: "10px",
-    borderRadius: "5px",
-    border: "1px solid #ccc"
-  }}
-/>
-
-<button
-  onClick={() => setSearch("")}
-  style={{
-    marginBottom: "15px",
-    padding: "5px 10px",
-    borderRadius: "5px",
-    cursor: "pointer"
-  }}
->
-  Clear Search
-</button>
 
 {/* ✅ ADD DROPDOWN EXACTLY HERE */}
 <select
@@ -160,7 +136,7 @@ const updateRecipe = async (id) => {
     borderRadius: "5px"
   }}
 >
-  <option value="All">All Categories</option>
+  <option value="">Select Category</option>
   <option value="Italian">Italian</option>
   <option value="Healthy">Healthy</option>
   <option value="Fast Food">Fast Food</option>
@@ -197,19 +173,23 @@ const updateRecipe = async (id) => {
       />
       <br /><br />
 
-      <input
-  	placeholder="Category (e.g. Veg, Non-Veg, Dessert)"
-  	value={category}
-  	onChange={(e) => setCategory(e.target.value)}
-  	style={{
-    	padding: "10px",
-    	width: "100%",
-    	marginBottom: "15px",
-    	borderRadius: "5px",
-    	border: "1px solid #ccc"
-       }}
-      />
-      <br /><br />
+<select
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+  style={{
+    padding: "10px",
+    width: "100%",
+    marginBottom: "15px",
+    borderRadius: "5px",
+    border: "1px solid #ccc"
+  }}
+>
+  <option value="">Select Category</option>
+  <option value="Italian">Italian</option>
+  <option value="Healthy">Healthy</option>
+  <option value="Fast Food">Fast Food</option>
+  <option value="Dessert">Dessert</option>
+</select>
 
       <button
   	onClick={editingId ? () => updateRecipe(editingId) : addRecipe}
@@ -322,6 +302,7 @@ display: "inline-block",
     	    setEditingId(recipe._id);
     	    setName(recipe.name);
     	    setIngredients(recipe.ingredients);
+	    setCategory(recipe.category || "");
 	}}
 	>
   	Edit
