@@ -257,9 +257,8 @@ const updateRecipe = async (id) => {
  	 )
         .slice() // copy array
         .filter((recipe) => {
-  const matchesSearch = recipe.name
-    ?.toLowerCase()
-    .includes(search.toLowerCase());
+  const matchesSearch = recipe.name?.toLowerCase().includes(search.toLowerCase()) ||
+  recipe.ingredients?.toLowerCase().includes(search.toLowerCase());
 
   const matchesCategory =
     categoryFilter === "All" ||
