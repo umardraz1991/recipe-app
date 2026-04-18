@@ -4,6 +4,7 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [recipes, setRecipes] = useState([]);
@@ -11,8 +12,10 @@ function App() {
   const [search, setSearch] = useState("");
   // fetch recipes
   const fetchRecipes = async () => {
+    setLoading(true);
     const res = await axios.get("http://localhost:5000/recipes");
     setRecipes(res.data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -173,6 +176,7 @@ const updateRecipe = async (id) => {
 )}
       <hr style={{ margin: "20px 0" }} />
       <h2 style={{ marginTop: "10px" }}>Recipes ({recipes.length})</h2>
+      {loading && <p>Loading recipes...</p>}
       {recipes.length === 0 && <p>No recipes found</p>}
       {recipes
   	.filter((recipe) =>
