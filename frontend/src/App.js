@@ -5,6 +5,7 @@ import "./App.css";
 
 function App() {
   const [error, setError] = useState("");
+  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
@@ -39,12 +40,15 @@ if (!name || !ingredients) {
     await axios.post("http://localhost:5000/recipes", {
       name,
       ingredients,
+      category,
     });
   alert("Recipe added successfully!");
     setName("");
     setIngredients("");
     fetchRecipes();
   };
+
+
 
   // delete recipe
   const deleteRecipe = async (id) => {
@@ -56,6 +60,7 @@ const updateRecipe = async (id) => {
   await axios.put(`http://localhost:5000/recipes/${id}`, {
     name,
     ingredients,
+    category,
   });
   setEditingId(null);
   setName("");
@@ -137,6 +142,20 @@ const updateRecipe = async (id) => {
         placeholder="Ingredients (comma separated)"
   	value={ingredients}
   	onChange={(e) => setIngredients(e.target.value)}
+  	style={{
+    	padding: "10px",
+    	width: "100%",
+    	marginBottom: "15px",
+    	borderRadius: "5px",
+    	border: "1px solid #ccc"
+       }}
+      />
+      <br /><br />
+
+      <input
+  	placeholder="Category (e.g. Veg, Non-Veg, Dessert)"
+  	value={category}
+  	onChange={(e) => setCategory(e.target.value)}
   	style={{
     	padding: "10px",
     	width: "100%",

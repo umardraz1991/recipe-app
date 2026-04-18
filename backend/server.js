@@ -17,6 +17,7 @@ mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/recipes")
 const recipeSchema = new mongoose.Schema({
   name: String,
   ingredients: String,
+  category: String,
 });
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
