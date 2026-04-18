@@ -285,7 +285,12 @@ const updateRecipe = async (id) => {
 	  <p style={{ 
 display: "inline-block",
     padding: "5px 10px",
-    backgroundColor: "#007bff",
+    backgroundColor:      
+      recipe.category === "Healthy" ? "green" :
+      recipe.category === "Fast Food" ? "red" :
+      recipe.category === "Dessert" ? "purple" :
+      recipe.category === "Italian" ? "orange" : 
+      "#007bff",
     color: "white",
     borderRadius: "15px",
     fontSize: "12px",
