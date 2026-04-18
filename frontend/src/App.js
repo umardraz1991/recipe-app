@@ -12,10 +12,16 @@ function App() {
   const [search, setSearch] = useState("");
   // fetch recipes
   const fetchRecipes = async () => {
+   try {
     setLoading(true);
+    setError("");
     const res = await axios.get("http://localhost:5000/recipes");
     setRecipes(res.data);
+   } catch (err) {
+    setError("Failed to fetch recipes");
+   } finally {
     setLoading(false);
+   }
   };
 
   useEffect(() => {
