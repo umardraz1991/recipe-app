@@ -21,6 +21,10 @@ function App() {
 
   // add recipe
   const addRecipe = async () => {
+if (!name || !ingredients) {
+  alert("Please fill all fields");
+  return;
+}
     await axios.post("http://localhost:5000/recipes", {
       name,
       ingredients,
@@ -76,17 +80,30 @@ const updateRecipe = async (id) => {
     	   ✏️ Editing existing recipe...
   	 </p>
 	)}
-	<input
-  	  placeholder="Search recipes..."
-  	  value={search}
-  	  onChange={(e) => setSearch(e.target.value)}
-  	  style={{
-    	  padding: "10px",
-    	  width: "100%",
-    	  marginBottom: "15px",
-    	  borderRadius: "5px",
-    	  border: "1px solid #ccc"
-  	}}
+<input
+  placeholder="Search recipes..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  style={{
+    padding: "10px",
+    width: "100%",
+    marginBottom: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc"
+  }}
+/>
+
+<button
+  onClick={() => setSearch("")}
+  style={{
+    marginBottom: "15px",
+    padding: "5px 10px",
+    borderRadius: "5px",
+    cursor: "pointer"
+  }}
+>
+  Clear Search
+</button>
 	/>
 	<br /><br />
 
@@ -100,12 +117,12 @@ const updateRecipe = async (id) => {
     	marginBottom: "10px",
     	borderRadius: "5px",
     	border: "1px solid #ccc"
-      }}
+       }}
       />
       <br /><br />
 
       <input
-        placeholder="Ingredients"
+        placeholder="Ingredients (comma separated)"
   	value={ingredients}
   	onChange={(e) => setIngredients(e.target.value)}
   	style={{
@@ -114,7 +131,7 @@ const updateRecipe = async (id) => {
     	marginBottom: "15px",
     	borderRadius: "5px",
     	border: "1px solid #ccc"
-      }}
+       }}
       />
       <br /><br />
 
@@ -134,9 +151,30 @@ const updateRecipe = async (id) => {
        >	
   	{editingId ? "Update Recipe" : "Add Recipe"}
        </button>
+	{editingId && (
+  	 <button
+   	  onClick={() => {
+          setEditingId(null);
+          setName("");
+          setIngredients("");
+        }}
+   	 style={{
+     	  marginTop: "10px",
+      	  padding: "8px",
+          width: "100%",
+          backgroundColor: "#6c757d",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer"
+    	}}
+       >
+          Cancel Edit
+       </button>
+)}
       <hr style={{ margin: "20px 0" }} />
-      <h2>Recipes</h2>
-
+      <h2 style={{ marginTop: "10px" }}>Recipes</h2>
+      {recipes.length === 0 && <p>No recipes found</p>}
       {recipes
   	.filter((recipe) =>
     	recipe.name.toLowerCase().includes(search.toLowerCase())
