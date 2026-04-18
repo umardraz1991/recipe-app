@@ -4,6 +4,7 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
@@ -145,6 +146,7 @@ const updateRecipe = async (id) => {
 
       <button
   	onClick={editingId ? () => updateRecipe(editingId) : addRecipe}
+	disabled={!name || !ingredients}
   	style={{
     	padding: "10px",
     	width: "100%",
