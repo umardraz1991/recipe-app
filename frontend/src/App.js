@@ -13,6 +13,7 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [search, setSearch] = useState("");
+  const [isReversed, setIsReversed] = useState(false);
   // fetch recipes
   const fetchRecipes = async () => {
    try {
@@ -249,6 +250,17 @@ const updateRecipe = async (id) => {
        </button>
 )}
       <hr style={{ margin: "20px 0" }} />
+<button
+  onClick={() => setIsReversed(!isReversed)}
+  style={{
+    marginBottom: "10px",
+    padding: "8px",
+    borderRadius: "5px",
+    cursor: "pointer"
+  }}
+>
+  {isReversed ? "Show Newest First" : "Show Oldest First"}
+</button>
       <h2 style={{ marginTop: "10px" }}>Recipes ({recipes.length})</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {loading && <p>Loading recipes...</p>}
@@ -264,7 +276,19 @@ const updateRecipe = async (id) => {
     	 recipe.name?.toLowerCase().includes(search.toLowerCase())
  	 )
         .slice() // copy array
-        .reverse() // reverse order
+        .filter((recipe) => {
+  const matchesSearch = recipe.name
+    ?.toLowerCase()
+    .includes(search.toLowerCase());
+
+  const matchesCategory =
+    categoryFilter === "All" ||
+    recipe.category === categoryFilter;
+
+  return matchesSearch && matchesCategory;
+})
+.slice()
+[isReversed ? "reverse" : "sort"]((a, b) => 0)
  	.map((recipe) => (
         <div
   	 key={recipe._id}
