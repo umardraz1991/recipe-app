@@ -230,6 +230,18 @@ const updateRecipe = async (id) => {
           </button>
         </div>
       ))}
+<hr />
+
+<p
+  style={{
+    textAlign: "center",
+    marginTop: "20px",
+    color: "#777",
+    fontSize: "14px"
+  }}
+>
+  © 2026 Recipe App | Built with React & Node.js
+</p>
     </div>
     </div>
   );
