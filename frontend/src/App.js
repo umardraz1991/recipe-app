@@ -39,6 +39,7 @@ if (!name || !ingredients) {
       name,
       ingredients,
     });
+  alert("Recipe added successfully!");
     setName("");
     setIngredients("");
     fetchRecipes();
