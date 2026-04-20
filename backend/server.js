@@ -74,3 +74,13 @@ app.use(express.static(path.join(__dirname, "build")));
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
+
+const path = require("path");
+
+// Serve React static files
+app.use(express.static(path.join(__dirname, "../build")));
+
+// Catch all → send React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
+});
