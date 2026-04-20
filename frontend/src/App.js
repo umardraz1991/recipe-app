@@ -49,6 +49,7 @@ if (!name || !ingredients) {
     setIngredients("");
     setCategory("");
     fetchRecipes();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
 
@@ -70,6 +71,7 @@ const updateRecipe = async (id) => {
   setIngredients("");
   setCategory("");
   fetchRecipes();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
   return (
