@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
@@ -10,8 +11,8 @@ app.use(express.json());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/recipes")
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
 // Schema
 const recipeSchema = new mongoose.Schema({
@@ -22,11 +23,7 @@ const recipeSchema = new mongoose.Schema({
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("Recipe API is running");
-});
-
+// API Routes
 app.get("/recipes", async (req, res) => {
   const recipes = await Recipe.find();
   res.json(recipes);
@@ -60,27 +57,17 @@ app.put("/recipes/:id", async (req, res) => {
   }
 });
 
+// ✅ Serve React build
+app.use(express.static(path.join(__dirname, "../build")));
+
+// ✅ Fallback to React app (MUST BE LAST)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
+});
+
 // Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
-});
-const path = require("path");
-
-app.use(express.static(path.join(__dirname, "build")));
-
-// ✅ FIXED fallback (Express 5 safe)
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
-const path = require("path");
-
-// Serve React static files
-app.use(express.static(path.join(__dirname, "../build")));
-
-// Catch all → send React app
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../build", "index.html"));
 });
