@@ -4,7 +4,6 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
-  const API_URL = process.env.REACT_APP_API_URL || "";
   const [error, setError] = useState("");
   const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,7 +19,7 @@ function App() {
    try {
     setLoading(true);
     setError("");
-    const res = await axios.get(`${API_URL}/recipes`);
+    const res = await axios.get("http://localhost:5000/recipes");
     setRecipes(res.data);
    } catch (err) {
     setError("Failed to fetch recipes");
@@ -40,11 +39,11 @@ if (!name || !ingredients) {
   console.log("Search:", search);  
   return;
 }
-    await axios.post(`${API_URL}/recipes`, {
-  name,
-  ingredients,
-  category,
-});
+    await axios.post("http://localhost:5000/recipes", {
+      name,
+      ingredients,
+      category,
+    });
   alert("Recipe added successfully!");
     setName("");
     setIngredients("");
@@ -54,17 +53,19 @@ if (!name || !ingredients) {
   };
 
 
-const deleteRecipe = async (id) => {
-  await axios.delete(`${API_URL}/recipes/${id}`);
-  fetchRecipes();
-};
+
+  // delete recipe
+  const deleteRecipe = async (id) => {
+    await axios.delete(`http://localhost:5000/recipes/${id}`);
+    fetchRecipes();
+  };
 
 const updateRecipe = async (id) => {
-await axios.put(`${API_URL}/recipes/${id}`, {
-  name,
-  ingredients,
-  category,
-});
+  await axios.put(`http://localhost:5000/recipes/${id}`, {
+    name,
+    ingredients,
+    category,
+  });
   setEditingId(null);
   setName("");
   setIngredients("");
