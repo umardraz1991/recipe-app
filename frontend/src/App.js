@@ -3,6 +3,7 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
+  const [message, setMessage] = useState("");
   const [recipes, setRecipes] = useState([]);
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
@@ -22,15 +23,18 @@ function App() {
   }, []);
 
   const addRecipe = async () => {
-    if (!name || !ingredients) return alert("Fill all fields");
+  if (!name || !ingredients) return alert("Fill all fields");
 
-    await axios.post("/recipes", { name, ingredients, category });
+  await axios.post("/recipes", { name, ingredients, category });
 
-    setName("");
-    setIngredients("");
-    setCategory("");
-    fetchRecipes();
-  };
+  setMessage("✅ Recipe added!");
+  setTimeout(() => setMessage(""), 2000);
+
+  setName("");
+  setIngredients("");
+  setCategory("");
+  fetchRecipes();
+};
 
   const deleteRecipe = async (id) => {
     await axios.delete(`/recipes/${id}`);
@@ -59,6 +63,11 @@ function App() {
       }}>
 
         <h1 style={{ textAlign: "center" }}>🍽 Recipe Manager</h1>
+		{message && (
+  <p style={{ color: "green", textAlign: "center" }}>
+    {message}
+  </p>
+)}
 
         {/* SEARCH */}
         <input
