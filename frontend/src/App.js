@@ -13,6 +13,7 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [isReversed, setIsReversed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   const fetchRecipes = async () => {
   try {
@@ -34,7 +35,9 @@ const highlight = (text) => {
 
   return parts.map((part, i) =>
     part.toLowerCase() === search.toLowerCase() ? (
-      <span key={i} style={{ backgroundColor: "yellow" }}>
+      <span key={i} style={{ backgroundColor:  darkMode ? "#ff9800" : "#ffe066",
+padding: "2px 4px",
+    borderRadius: "4px"	  }}>
         {part}
       </span>
     ) : (
@@ -87,7 +90,9 @@ const filteredRecipes = recipes
   return (
   <div
     style={{
-      background: "linear-gradient(135deg, #667eea, #764ba2)",
+      background: darkMode
+  ? "linear-gradient(135deg, #1e1e2f, #121212)"
+  : "linear-gradient(135deg, #667eea, #764ba2)",
       minHeight: "100vh",
       padding: "40px"
     }}
@@ -95,7 +100,8 @@ const filteredRecipes = recipes
      <div style={{
    maxWidth: "650px",
   margin: "auto",
-  background: "#ffffff",
+  background: darkMode ? "#1f1f1f" : "#ffffff",
+color: darkMode ? "#f1f1f1" : "#000",
   padding: "30px",
   borderRadius: "20px",
   boxShadow: "0 12px 30px rgba(0,0,0,0.2)"
@@ -110,6 +116,25 @@ const filteredRecipes = recipes
 }}>
   🍽 Recipe Manager
 </h1>
+<button
+  onClick={() => setDarkMode(!darkMode)}
+  style={{
+    width: "100%",
+    padding: "10px",
+    marginBottom: "15px",
+    borderRadius: "10px",
+    border: "none",
+    cursor: "pointer",
+    background: darkMode
+      ? "linear-gradient(to right, #444, #222)"
+      : "linear-gradient(to right, #ffd369, #ffb347)",
+    color: darkMode ? "white" : "black",
+    fontWeight: "bold"
+  }}
+>
+  {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+</button>
+
 		{editingId && (
   <p style={{ color: "blue", marginBottom: "10px" }}>
     ✏️ Editing: {name}
@@ -128,13 +153,14 @@ const filteredRecipes = recipes
   value={search}
   onChange={(e) => setSearch(e.target.value)}
   style={{
-    width: "100%",
-    padding: "12px",
-    marginBottom: "15px",
-    borderRadius: "10px",
-    border: "1px solid #ddd",
-    fontSize: "14px"
-  }}
+  width: "100%",
+  padding: "12px",
+  marginBottom: "12px",
+  borderRadius: "10px",
+  border: "1px solid #555",
+  backgroundColor: darkMode ? "#2c2c2c" : "#fff",
+  color: darkMode ? "#fff" : "#000"
+}}
 />
 
 
@@ -143,12 +169,14 @@ const filteredRecipes = recipes
   value={categoryFilter}
   onChange={(e) => setCategoryFilter(e.target.value)}
   style={{
-    width: "100%",
-    padding: "10px",
-    marginBottom: "10px",
-    borderRadius: "10px",
-    border: "1px solid #ddd"
-  }}
+  width: "100%",
+  padding: "10px",
+  marginBottom: "10px",
+  borderRadius: "10px",
+  border: "1px solid #555",
+  backgroundColor: darkMode ? "#2c2c2c" : "#fff",
+  color: darkMode ? "#fff" : "#000"
+}}
 >
   <option value="All">All Categories</option>
   <option value="Italian">Italian</option>
@@ -162,37 +190,51 @@ const filteredRecipes = recipes
           placeholder="Recipe name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-		  style={{
-    width: "100%",
-  padding: "12px",
-  marginBottom: "12px",
+style={{
+  width: "100%",
+  padding: "10px",
+  marginBottom: "10px",
   borderRadius: "10px",
-  border: "1px solid #ddd",
-  fontSize: "14px"
-  }}
+  border: "1px solid #555",
+  backgroundColor: darkMode ? "#2c2c2c" : "#fff",
+  color: darkMode ? "#fff" : "#000"
+}}
         />
 
         <input
           placeholder="Ingredients"
           value={ingredients}
           onChange={(e) => setIngredients(e.target.value)}
-		  style={{
-    width: "100%",
+style={{
+  width: "100%",
   padding: "12px",
   marginBottom: "12px",
   borderRadius: "10px",
-  border: "1px solid #ddd",
-  fontSize: "14px"
-  }}
+  border: "1px solid #555",
+  backgroundColor: darkMode ? "#2c2c2c" : "#fff",
+  color: darkMode ? "#fff" : "#000"
+}}
         />
 
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="">Select Category</option>
-          <option value="Italian">Italian</option>
-          <option value="Healthy">Healthy</option>
-          <option value="Fast Food">Fast Food</option>
-          <option value="Dessert">Dessert</option>
-        </select>
+<select
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+  style={{
+    width: "100%",
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "10px",
+    border: "1px solid #555",
+    backgroundColor: darkMode ? "#2c2c2c" : "#fff",
+    color: darkMode ? "#fff" : "#000"
+  }}
+>
+  <option value="">Select Category</option>
+  <option value="Italian">Italian</option>
+  <option value="Healthy">Healthy</option>
+  <option value="Fast Food">Fast Food</option>
+  <option value="Dessert">Dessert</option>
+</select>
 
         <button
   onClick={editingId ? () => updateRecipe(editingId) : addRecipe}
@@ -248,8 +290,9 @@ const filteredRecipes = recipes
         marginBottom: "15px",
         padding: "15px",
         borderRadius: "12px",
-        backgroundColor: "#ffffff",
-        border: "1px solid #eee",
+        backgroundColor: darkMode ? "#2a2a2a" : "#ffffff",
+color: darkMode ? "#f1f1f1" : "#000",
+border: darkMode ? "1px solid #444" : "1px solid #eee",
         boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
       }}
     >
