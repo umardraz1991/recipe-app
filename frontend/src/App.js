@@ -161,6 +161,8 @@ color: darkMode ? "#f1f1f1" : "#000",
   backgroundColor: darkMode ? "#2c2c2c" : "#fff",
   color: darkMode ? "#fff" : "#000"
 }}
+onFocus={(e) => e.target.style.border = "1px solid #007bff"}
+onBlur={(e) => e.target.style.border = "1px solid #555"}
 />
 
 
@@ -199,6 +201,8 @@ style={{
   backgroundColor: darkMode ? "#2c2c2c" : "#fff",
   color: darkMode ? "#fff" : "#000"
 }}
+onFocus={(e) => e.target.style.border = "1px solid #007bff"}
+onBlur={(e) => e.target.style.border = "1px solid #555"}
         />
 
         <input
@@ -214,6 +218,8 @@ style={{
   backgroundColor: darkMode ? "#2c2c2c" : "#fff",
   color: darkMode ? "#fff" : "#000"
 }}
+onFocus={(e) => e.target.style.border = "1px solid #007bff"}
+onBlur={(e) => e.target.style.border = "1px solid #555"}
         />
 
 <select
@@ -288,13 +294,22 @@ style={{
       key={recipe._id}
       style={{
         marginBottom: "15px",
-        padding: "15px",
-        borderRadius: "12px",
-        backgroundColor: darkMode ? "#2a2a2a" : "#ffffff",
-color: darkMode ? "#f1f1f1" : "#000",
-border: darkMode ? "1px solid #444" : "1px solid #eee",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
+  padding: "15px",
+  borderRadius: "12px",
+  backgroundColor: darkMode ? "#2a2a2a" : "#ffffff",
+  color: darkMode ? "#f1f1f1" : "#000",
+  border: darkMode ? "1px solid #444" : "1px solid #eee",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+  transition: "all 0.3s ease"   // ✅ ADD THIS
       }}
+	  onMouseEnter={(e) => {
+  e.currentTarget.style.transform = "scale(1.03)";
+  e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
+}}
+onMouseLeave={(e) => {
+  e.currentTarget.style.transform = "scale(1)";
+  e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+}}
     >
       <h3>{highlight(recipe.name)}</h3>
       <p>{highlight(recipe.ingredients)}</p>
@@ -343,8 +358,12 @@ border: darkMode ? "1px solid #444" : "1px solid #eee",
             color: "white",
             border: "none",
             padding: "8px",
+			transition: "0.2s",
+			cursor: "pointer",
             borderRadius: "8px"
           }}
+		  onMouseEnter={(e) => e.target.style.opacity = "0.8"}
+		  onMouseLeave={(e) => e.target.style.opacity = "1"}
         >
           Delete
         </button>
