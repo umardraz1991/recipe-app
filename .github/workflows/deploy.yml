@@ -4,7 +4,7 @@ name: Build and deploy Node.js app to Azure
 on:
   push:
     branches:
-      - before-azure-deploy
+      - main
 
 jobs:
   build-and-deploy:
