@@ -1,6 +1,10 @@
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
+<<<<<<< HEAD
 const path = require("path");
+=======
+>>>>>>> 692ea7e (fix: serve frontend from backend)
 
 const app = express();
 
@@ -43,11 +47,18 @@ app.put("/recipes/:id", async (req, res) => {
   res.json(updated);
 });
 
+<<<<<<< HEAD
 // ✅ Serve React
 app.use(express.static(path.join(__dirname, "build")));
 
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
+=======
+app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
+
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
+>>>>>>> 692ea7e (fix: serve frontend from backend)
 });
 
 // ✅ PORT (CRITICAL FOR AZURE)

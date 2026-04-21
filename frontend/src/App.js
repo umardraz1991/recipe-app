@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+const API_URL = "https://recipe-app-azgjcdgbddfccucj.germanywestcentral-01.azurewebsites.net";
+>>>>>>> 692ea7e (fix: serve frontend from backend)
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
@@ -18,7 +22,12 @@ function App() {
   const fetchRecipes = async () => {
   try {
     setLoading(true);
+<<<<<<< HEAD
     const res = await axios.get("/recipes");
+=======
+    setError("");
+    const res = await axios.get(`${API_URL}/recipes`);
+>>>>>>> 692ea7e (fix: serve frontend from backend)
     setRecipes(res.data);
   } catch (err) {
     console.log(err);
@@ -51,13 +60,48 @@ padding: "2px 4px",
   }, []);
 
   const addRecipe = async () => {
+<<<<<<< HEAD
   if (!name || !ingredients) return alert("Fill all fields");
+=======
+if (!name || !ingredients) {
+  alert("Please fill all fields");
+  console.log("Search:", search);  
+  return;
+}
+    await axios.post(`${API_URL}/recipes`, {
+  name,
+  ingredients,
+  category,
+});
+  alert("Recipe added successfully!");
+    setName("");
+    setIngredients("");
+    setCategory("");
+    fetchRecipes();
+  };
+>>>>>>> 692ea7e (fix: serve frontend from backend)
 
   await axios.post("/recipes", { name, ingredients, category });
 
   setMessage("✅ Recipe added!");
   setTimeout(() => setMessage(""), 2000);
 
+<<<<<<< HEAD
+=======
+  // delete recipe
+  const deleteRecipe = async (id) => {
+    await axios.delete(`${API_URL}/recipes/${id}`);
+    fetchRecipes();
+  };
+
+const updateRecipe = async (id) => {
+  await axios.put(`${API_URL}/recipes/${id}`, {
+    name,
+    ingredients,
+    category,
+  });
+  setEditingId(null);
+>>>>>>> 692ea7e (fix: serve frontend from backend)
   setName("");
   setIngredients("");
   setCategory("");
