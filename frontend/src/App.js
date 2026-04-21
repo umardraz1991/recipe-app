@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-const API_URL = "https://recipe-app-azgjcdgbddfccucj.germanywestcentral-01.azurewebsites.net";
-=======
-<<<<<<< HEAD
-=======
-const API_URL = "https://recipe-app-azgjcdgbddfccucj.germanywestcentral-01.azurewebsites.net";
->>>>>>> 692ea7e (fix: serve frontend from backend)
->>>>>>> 7be0faf
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
+const API_URL = "https://recipe-app-azgjcdgbddfccucj.germanywestcentral-01.azurewebsites.net";
+
 
 function App() {
   const [message, setMessage] = useState("");
@@ -22,22 +16,18 @@ function App() {
   const [isReversed, setIsReversed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [error, setError] = useState("");
 
   const fetchRecipes = async () => {
   try {
     setLoading(true);
-<<<<<<< HEAD
-    const res = await axios.get("/recipes");
-=======
     setError("");
+
     const res = await axios.get(`${API_URL}/recipes`);
-<<<<<<< HEAD
-=======
->>>>>>> 692ea7e (fix: serve frontend from backend)
->>>>>>> 7be0faf
+
     setRecipes(res.data);
   } catch (err) {
-    console.log(err);
+    setError("Failed to fetch recipes");
   } finally {
     setLoading(false);
   }
@@ -66,40 +56,34 @@ padding: "2px 4px",
     fetchRecipes();
   }, []);
 
-  const addRecipe = async () => {
-<<<<<<< HEAD
-  if (!name || !ingredients) return alert("Fill all fields");
-=======
-if (!name || !ingredients) {
-  alert("Please fill all fields");
-  console.log("Search:", search);  
-  return;
-}
-    await axios.post(`${API_URL}/recipes`, {
-  name,
-  ingredients,
-  category,
-});
+const addRecipe = async () => {
+  if (!name || !ingredients) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  await axios.post(`${API_URL}/recipes`, {
+    name,
+    ingredients,
+    category,
+  });
+
   alert("Recipe added successfully!");
-    setName("");
-    setIngredients("");
-    setCategory("");
-    fetchRecipes();
-  };
->>>>>>> 692ea7e (fix: serve frontend from backend)
+  setName("");
+  setIngredients("");
+  setCategory("");
 
-  await axios.post("/recipes", { name, ingredients, category });
+  fetchRecipes();
+};
+//  await axios.post("/recipes", { name, ingredients, category });
 
-  setMessage("✅ Recipe added!");
-  setTimeout(() => setMessage(""), 2000);
-
-<<<<<<< HEAD
-=======
+//  setMessage("✅ Recipe added!");
+//  setTimeout(() => setMessage(""), 2000);
   // delete recipe
-  const deleteRecipe = async (id) => {
-    await axios.delete(`${API_URL}/recipes/${id}`);
-    fetchRecipes();
-  };
+const deleteRecipe = async (id) => {
+  await axios.delete(`${API_URL}/recipes/${id}`);
+  fetchRecipes();
+};
 
 const updateRecipe = async (id) => {
   await axios.put(`${API_URL}/recipes/${id}`, {
@@ -107,28 +91,14 @@ const updateRecipe = async (id) => {
     ingredients,
     category,
   });
+
   setEditingId(null);
->>>>>>> 692ea7e (fix: serve frontend from backend)
   setName("");
   setIngredients("");
   setCategory("");
   fetchRecipes();
 };
 
-  const deleteRecipe = async (id) => {
-    await axios.delete(`/recipes/${id}`);
-    fetchRecipes();
-  };
-
-  const updateRecipe = async (id) => {
-    await axios.put(`/recipes/${id}`, { name, ingredients, category });
-
-    setEditingId(null);
-    setName("");
-    setIngredients("");
-    setCategory("");
-    fetchRecipes();
-  };
 const filteredRecipes = recipes
   .filter(recipe =>
     recipe.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -136,7 +106,7 @@ const filteredRecipes = recipes
   )
   .filter(r =>
     categoryFilter === "All" || r.category === categoryFilter
-  );
+  )
 
   return (
   <div
