@@ -39,9 +39,26 @@ app.get("/recipes", async (req, res) => {
 });
 
 app.post("/recipes", async (req, res) => {
-  const newRecipe = new Recipe(req.body);
-  await newRecipe.save();
-  res.json(newRecipe);
+  try {
+    console.log("BODY:", req.body);
+
+    if (!req.body.name || !req.body.ingredients) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    const newRecipe = new Recipe({
+      name: req.body.name,
+      ingredients: req.body.ingredients,
+      category: req.body.category || "General",
+    });
+
+    await newRecipe.save();
+
+    res.json(newRecipe);
+  } catch (error) {
+    console.error("POST ERROR:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.delete("/recipes/:id", async (req, res) => {
