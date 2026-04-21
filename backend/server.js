@@ -42,15 +42,26 @@ app.get("/recipes", async (req, res) => {
 
 app.post("/recipes", async (req, res) => {
   try {
-    console.log("BODY:", req.body);
+    console.log("Incoming body:", req.body);
 
-    const newRecipe = new Recipe(req.body);
+    if (!req.body) {
+      return res.status(400).json({ error: "No data received" });
+    }
+
+    const newRecipe = new Recipe({
+      name: req.body.name,
+      ingredients: req.body.ingredients,
+      category: req.body.category,
+    });
+
     await newRecipe.save();
 
-    res.json(newRecipe);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    console.log("Saved:", newRecipe);
+
+    res.status(201).json(newRecipe);
+  } catch (error) {
+    console.error("ERROR:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
