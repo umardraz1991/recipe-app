@@ -5,7 +5,6 @@ const API_URL = "https://recipe-app-azgjcdgbddfccucj.germanywestcentral-01.azure
 
 
 function App() {
-  const [message, setMessage] = useState("");
   const [recipes, setRecipes] = useState([]);
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
@@ -14,9 +13,7 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [editingId, setEditingId] = useState(null);
   const [isReversed, setIsReversed] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const [error, setError] = useState("");
 
   const fetchRecipes = async () => {
   try {
