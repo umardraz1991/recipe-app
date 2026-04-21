@@ -1,28 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 const path = require("path");
 
 const app = express();
 
-// ✅ ✅ PUT MIDDLEWARE HERE (EXACT PLACE)
-app.use(cors());
+// ✅ ONLY THIS (no cors, no options)
 app.use(express.json());
 
-// ✅ SAFE for Express 5
-app.use((req, res, next) => {
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-  next();
-});
-
-// ⬇️ THEN MongoDB connection
+// ✅ Mongo
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-// ⬇️ THEN schema
+// ✅ Schema
 const recipeSchema = new mongoose.Schema({
   name: String,
   ingredients: String,
@@ -31,7 +21,7 @@ const recipeSchema = new mongoose.Schema({
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
 
-// ⬇️ THEN routes
+// ✅ API
 app.get("/recipes", async (req, res) => {
   const recipes = await Recipe.find();
   res.json(recipes);
@@ -43,16 +33,26 @@ app.post("/recipes", async (req, res) => {
   res.json(newRecipe);
 });
 
-// ⬇️ THEN static build
+app.delete("/recipes/:id", async (req, res) => {
+  await Recipe.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted" });
+});
+
+app.put("/recipes/:id", async (req, res) => {
+  const updated = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.json(updated);
+});
+
+// ✅ Serve React
 app.use(express.static(path.join(__dirname, "..", "build")));
 
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "..", "build", "index.html"));
 });
 
-// ⬇️ LAST: server start
-const PORT = process.env.PORT || 5000;
+// ✅ PORT (CRITICAL FOR AZURE)
+const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
