@@ -14,6 +14,9 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [isReversed, setIsReversed] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState("");
+const [message, setMessage] = useState("");
 
   const fetchRecipes = async () => {
   try {
@@ -52,6 +55,7 @@ padding: "2px 4px",
   useEffect(() => {
     fetchRecipes();
   }, []);
+
 
 const addRecipe = async () => {
   if (!name || !ingredients) {
@@ -134,6 +138,10 @@ color: darkMode ? "#f1f1f1" : "#000",
 }}>
   🍽 Recipe Manager
 </h1>
+{loading && <p>Loading...</p>}
+{error && <p style={{ color: "red" }}>{error}</p>}
+{message && <p style={{ color: "green" }}>{message}</p>}
+
 <button
   onClick={() => setDarkMode(!darkMode)}
   style={{
