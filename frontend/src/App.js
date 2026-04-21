@@ -60,7 +60,6 @@ function App() {
   };
 
   return (
-    return (
   <div
     style={{
       background: "linear-gradient(to right, #e3f2fd, #fce4ec)",
@@ -68,16 +67,22 @@ function App() {
       padding: "40px"
     }}
   >
-      <div style={{
-        maxWidth: "600px",
-        margin: "auto",
-        background: "white",
-        padding: "20px",
-        borderRadius: "10px",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
-      }}>
+     <div style={{
+  maxWidth: "600px",
+  margin: "auto",
+  background: "#ffffff",
+  padding: "25px",
+  borderRadius: "15px",
+  boxShadow: "0 8px 20px rgba(0,0,0,0.15)"
+}}>
 
-        <h1 style={{ textAlign: "center" }}>🍽 Recipe Manager</h1>
+        <h1 style={{
+  textAlign: "center",
+  color: "#ff5722",
+  marginBottom: "20px"
+}}>
+  🍽 Recipe Manager
+</h1>
 		{editingId && (
   <p style={{ color: "blue", marginBottom: "10px" }}>
     ✏️ Editing: {name}
