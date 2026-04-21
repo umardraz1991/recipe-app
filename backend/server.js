@@ -60,12 +60,14 @@ app.put("/recipes/:id", async (req, res) => {
 // ✅ Serve React build
 app.use(express.static(path.join(__dirname, "..", "build")));
 
-// ✅ Fallback to React app (MUST BE LAST)
-const path = require("path");
-
-app.use(express.static(path.join(__dirname, "..", "build")));
-
-// ✅ Express 5 SAFE fallback
+// ✅ Express 5 SAFE fallback (MUST BE LAST)
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+});
+
+// Start server
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
 });
