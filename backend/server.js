@@ -42,26 +42,24 @@ app.get("/recipes", async (req, res) => {
 
 app.post("/recipes", async (req, res) => {
   try {
-    console.log("Incoming body:", req.body);
+    console.log("BODY:", req.body);
 
-    if (!req.body) {
-      return res.status(400).json({ error: "No data received" });
+    if (!req.body || !req.body.name || !req.body.ingredients) {
+      return res.status(400).json({ error: "Invalid data" });
     }
 
     const newRecipe = new Recipe({
       name: req.body.name,
       ingredients: req.body.ingredients,
-      category: req.body.category,
+      category: req.body.category || "General",
     });
 
     await newRecipe.save();
 
-    console.log("Saved:", newRecipe);
-
     res.status(201).json(newRecipe);
-  } catch (error) {
-    console.error("ERROR:", error);
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error("POST ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
