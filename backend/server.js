@@ -1,19 +1,18 @@
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// ✅ ONLY THIS (no cors, no options)
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/recipes")
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+// ✅ Mongo
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
-// Schema
+// ✅ Schema
 const recipeSchema = new mongoose.Schema({
   name: String,
   ingredients: String,
@@ -22,11 +21,7 @@ const recipeSchema = new mongoose.Schema({
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("Recipe API is running");
-});
-
+// ✅ API
 app.get("/recipes", async (req, res) => {
   const recipes = await Recipe.find();
   res.json(recipes);
@@ -39,28 +34,24 @@ app.post("/recipes", async (req, res) => {
 });
 
 app.delete("/recipes/:id", async (req, res) => {
-  try {
-    await Recipe.findByIdAndDelete(req.params.id);
-    res.json({ message: "Recipe deleted" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  await Recipe.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted" });
 });
 
 app.put("/recipes/:id", async (req, res) => {
-  try {
-    const updated = await Recipe.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updated);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const updated = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.json(updated);
 });
 
-// Start server
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
+
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
+});
+
+// ✅ PORT (CRITICAL FOR AZURE)
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
