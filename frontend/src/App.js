@@ -26,6 +26,23 @@ function App() {
   }
 };
 
+const highlight = (text) => {
+  if (!text) return ""; // ✅ prevent crash
+  if (!search) return text;
+
+  const parts = text.split(new RegExp(`(${search})`, "gi"));
+
+  return parts.map((part, i) =>
+    part.toLowerCase() === search.toLowerCase() ? (
+      <span key={i} style={{ backgroundColor: "yellow" }}>
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+};
+
   useEffect(() => {
     fetchRecipes();
   }, []);
@@ -58,6 +75,14 @@ function App() {
     setCategory("");
     fetchRecipes();
   };
+const filteredRecipes = recipes
+  .filter(recipe =>
+    recipe.name.toLowerCase().includes(search.toLowerCase()) ||
+    recipe.ingredients.toLowerCase().includes(search.toLowerCase())
+  )
+  .filter(r =>
+    categoryFilter === "All" || r.category === categoryFilter
+  );
 
   return (
   <div
@@ -97,19 +122,21 @@ function App() {
 )}
 
         {/* SEARCH */}
-        <input
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{
+
+<input
+  placeholder="🔍 Search recipes..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  style={{
     width: "100%",
-  padding: "12px",
-  marginBottom: "12px",
-  borderRadius: "10px",
-  border: "1px solid #ddd",
-  fontSize: "14px"
+    padding: "12px",
+    marginBottom: "15px",
+    borderRadius: "10px",
+    border: "1px solid #ddd",
+    fontSize: "14px"
   }}
-        />
+/>
+
 
         {/* FILTER */}
  <select
@@ -203,31 +230,17 @@ function App() {
   {isReversed ? "Newest First" : "Oldest First"}
 </button>
 
-        <h2>Recipes ({recipes.length})</h2>
-		{loading && (
-  <div style={{ textAlign: "center", marginTop: "20px" }}>
-    <div style={{
-      width: "40px",
-      height: "40px",
-      border: "5px solid #ccc",
-      borderTop: "5px solid #007bff",
-      borderRadius: "50%",
-      animation: "spin 1s linear infinite",
-      margin: "auto"
-    }} />
-  </div>
+   <h2>Recipes ({recipes.length})</h2>
+
+{/* NO RESULTS */}
+{filteredRecipes.length === 0 && (
+  <p style={{ textAlign: "center", color: "#777" }}>
+    🔍 No recipes found
+  </p>
 )}
 
-{recipes
-  .filter(r =>
-    r.name.toLowerCase().includes(search.toLowerCase()) ||
-    r.ingredients.toLowerCase().includes(search.toLowerCase())
-  )
-  .filter(r =>
-    categoryFilter === "All" || r.category === categoryFilter
-  )
-  .slice()
-  [isReversed ? "reverse" : "sort"]((a, b) => 0)
+{/* LIST */}
+{(isReversed ? [...filteredRecipes].reverse() : filteredRecipes)
   .map(recipe => (
     <div
       key={recipe._id}
@@ -237,12 +250,11 @@ function App() {
         borderRadius: "12px",
         backgroundColor: "#ffffff",
         border: "1px solid #eee",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-        transition: "all 0.3s ease"
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
       }}
     >
-      <h3>{recipe.name}</h3>
-      <p>{recipe.ingredients}</p>
+      <h3>{highlight(recipe.name)}</h3>
+      <p>{highlight(recipe.ingredients)}</p>
 
       <p style={{
         display: "inline-block",
@@ -255,13 +267,12 @@ function App() {
           recipe.category === "Italian" ? "orange" :
           "#007bff",
         color: "white",
-        fontSize: "12px",
-        marginBottom: "10px"
+        fontSize: "12px"
       }}>
         {recipe.category || "General"}
       </p>
 
-      <div style={{ display: "flex", gap: "10px" }}>
+      <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
         <button
           onClick={() => {
             setEditingId(recipe._id);
@@ -296,7 +307,7 @@ function App() {
         </button>
       </div>
     </div>
-  ))}
+))}
    </div>
     </div>
   );
