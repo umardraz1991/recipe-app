@@ -68,18 +68,20 @@ function App() {
     }}
   >
      <div style={{
-  maxWidth: "600px",
+   maxWidth: "650px",
   margin: "auto",
   background: "#ffffff",
-  padding: "25px",
+  padding: "30px",
   borderRadius: "20px",
-  boxShadow: "0 10px 25px rgba(0,0,0,0.2)"
+  boxShadow: "0 12px 30px rgba(0,0,0,0.2)"
 }}>
 
         <h1 style={{
   textAlign: "center",
   color: "#ff5722",
-  marginBottom: "20px"
+  marginBottom: "25px",
+  fontSize: "28px",
+  fontWeight: "bold"
 }}>
   🍽 Recipe Manager
 </h1>
@@ -101,26 +103,32 @@ function App() {
           onChange={(e) => setSearch(e.target.value)}
           style={{
     width: "100%",
-    padding: "10px",
-    marginBottom: "10px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-    outline: "none"
+  padding: "12px",
+  marginBottom: "12px",
+  borderRadius: "10px",
+  border: "1px solid #ddd",
+  fontSize: "14px"
   }}
         />
 
         {/* FILTER */}
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-        >
-          <option value="All">All Categories</option>
-          <option value="Italian">Italian</option>
-          <option value="Healthy">Healthy</option>
-          <option value="Fast Food">Fast Food</option>
-          <option value="Dessert">Dessert</option>
-        </select>
+ <select
+  value={categoryFilter}
+  onChange={(e) => setCategoryFilter(e.target.value)}
+  style={{
+    width: "100%",
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "10px",
+    border: "1px solid #ddd"
+  }}
+>
+  <option value="All">All Categories</option>
+  <option value="Italian">Italian</option>
+  <option value="Healthy">Healthy</option>
+  <option value="Fast Food">Fast Food</option>
+  <option value="Dessert">Dessert</option>
+</select>
 
         {/* FORM */}
         <input
@@ -129,11 +137,11 @@ function App() {
           onChange={(e) => setName(e.target.value)}
 		  style={{
     width: "100%",
-    padding: "10px",
-    marginBottom: "10px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-    outline: "none"
+  padding: "12px",
+  marginBottom: "12px",
+  borderRadius: "10px",
+  border: "1px solid #ddd",
+  fontSize: "14px"
   }}
         />
 
@@ -143,11 +151,11 @@ function App() {
           onChange={(e) => setIngredients(e.target.value)}
 		  style={{
     width: "100%",
-    padding: "10px",
-    marginBottom: "10px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-    outline: "none"
+  padding: "12px",
+  marginBottom: "12px",
+  borderRadius: "10px",
+  border: "1px solid #ddd",
+  fontSize: "14px"
   }}
         />
 
@@ -179,9 +187,21 @@ function App() {
         <hr />
 
         {/* SORT */}
-        <button onClick={() => setIsReversed(!isReversed)}>
-          {isReversed ? "Newest First" : "Oldest First"}
-        </button>
+        <button
+  onClick={() => setIsReversed(!isReversed)}
+  style={{
+    width: "100%",
+    padding: "10px",
+    background: "#6c63ff",
+    color: "white",
+    border: "none",
+    borderRadius: "10px",
+    marginBottom: "15px",
+    cursor: "pointer"
+  }}
+>
+  {isReversed ? "Newest First" : "Oldest First"}
+</button>
 
         <h2>Recipes ({recipes.length})</h2>
 		{loading && (
@@ -215,20 +235,13 @@ function App() {
         marginBottom: "15px",
         padding: "15px",
         borderRadius: "12px",
-        backgroundColor: "white",
+        backgroundColor: "#ffffff",
+        border: "1px solid #eee",
         boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-        transition: "0.3s",
-        cursor: "pointer"
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "scale(1.02)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "scale(1)";
+        transition: "all 0.3s ease"
       }}
     >
       <h3>{recipe.name}</h3>
-
       <p>{recipe.ingredients}</p>
 
       <p style={{
@@ -248,39 +261,40 @@ function App() {
         {recipe.category || "General"}
       </p>
 
-      <button
-  onClick={() => {
-    setEditingId(recipe._id);
-    setName(recipe.name);
-    setIngredients(recipe.ingredients);
-    setCategory(recipe.category || "");
-  }}
-  style={{
-    background: "linear-gradient(to right, #007bff, #0056b3)",
-    color: "white",
-    border: "none",
-    padding: "6px 12px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    marginRight: "10px"
-  }}
->
-  Edit
-</button>
+      <div style={{ display: "flex", gap: "10px" }}>
+        <button
+          onClick={() => {
+            setEditingId(recipe._id);
+            setName(recipe.name);
+            setIngredients(recipe.ingredients);
+            setCategory(recipe.category || "");
+          }}
+          style={{
+            flex: 1,
+            background: "#007bff",
+            color: "white",
+            border: "none",
+            padding: "8px",
+            borderRadius: "8px"
+          }}
+        >
+          Edit
+        </button>
 
-      <button
-  onClick={() => deleteRecipe(recipe._id)}
-  style={{
-    background: "linear-gradient(to right, #ff4b2b, #ff416c)",
-    color: "white",
-    border: "none",
-    padding: "6px 12px",
-    borderRadius: "8px",
-    cursor: "pointer"
-  }}
->
-  Delete
-</button>
+        <button
+          onClick={() => deleteRecipe(recipe._id)}
+          style={{
+            flex: 1,
+            background: "red",
+            color: "white",
+            border: "none",
+            padding: "8px",
+            borderRadius: "8px"
+          }}
+        >
+          Delete
+        </button>
+      </div>
     </div>
   ))}
    </div>
