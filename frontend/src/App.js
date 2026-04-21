@@ -156,12 +156,24 @@ function App() {
           .slice()
           [isReversed ? "reverse" : "sort"]((a, b) => 0)
           .map(recipe => (
-            <div key={recipe._id} style={{
-              marginBottom: "10px",
-              padding: "10px",
-              border: "1px solid #ddd",
-              borderRadius: "8px"
-            }}>
+            <div
+  key={recipe._id}
+  style={{
+    marginBottom: "15px",
+    padding: "15px",
+    borderRadius: "12px",
+    backgroundColor: "white",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+    transition: "0.3s",
+    cursor: "pointer"
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "scale(1.02)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "scale(1)";
+  }}
+>
               <h3>{recipe.name}</h3>
               <p>{recipe.ingredients}</p>
               <p style={{
