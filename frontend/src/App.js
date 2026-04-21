@@ -72,8 +72,8 @@ function App() {
   margin: "auto",
   background: "#ffffff",
   padding: "25px",
-  borderRadius: "15px",
-  boxShadow: "0 8px 20px rgba(0,0,0,0.15)"
+  borderRadius: "20px",
+  boxShadow: "0 10px 25px rgba(0,0,0,0.2)"
 }}>
 
         <h1 style={{
@@ -136,25 +136,22 @@ function App() {
           <option value="Dessert">Dessert</option>
         </select>
 
-        <button onClick={editingId ? () => updateRecipe(editingId) : addRecipe}>
-          {editingId ? "Update Recipe" : "Add Recipe"}
-        </button>
-{editingId && (
-  <button
-    onClick={() => {
-      setEditingId(null);
-      setName("");
-      setIngredients("");
-      setCategory("");
-    }}
-    style={{
-      marginTop: "10px",
-      backgroundColor: "#6c757d",
-      color: "white"
-    }}
-  >
-    Cancel Edit
-  </button>
+        <button
+  onClick={editingId ? () => updateRecipe(editingId) : addRecipe}
+  style={{
+    width: "100%",
+    padding: "12px",
+    background: "linear-gradient(to right, #28a745, #218838)",
+    color: "white",
+    border: "none",
+    borderRadius: "10px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    marginTop: "10px"
+  }}
+>
+  {editingId ? "Update Recipe" : "Add Recipe"}
+</button>
 )}
         <hr />
 
@@ -229,38 +226,38 @@ function App() {
       </p>
 
       <button
-        onClick={() => {
-          setEditingId(recipe._id);
-          setName(recipe.name);
-          setIngredients(recipe.ingredients);
-          setCategory(recipe.category || "");
-        }}
-        style={{
-          backgroundColor: "#007bff",
-          color: "white",
-          border: "none",
-          padding: "6px 12px",
-          borderRadius: "5px",
-          cursor: "pointer",
-          marginRight: "10px"
-        }}
-      >
-        Edit
-      </button>
+  onClick={() => {
+    setEditingId(recipe._id);
+    setName(recipe.name);
+    setIngredients(recipe.ingredients);
+    setCategory(recipe.category || "");
+  }}
+  style={{
+    background: "linear-gradient(to right, #007bff, #0056b3)",
+    color: "white",
+    border: "none",
+    padding: "6px 12px",
+    borderRadius: "8px",
+    cursor: "pointer",
+    marginRight: "10px"
+  }}
+>
+  Edit
+</button>
 
       <button
-        onClick={() => deleteRecipe(recipe._id)}
-        style={{
-          backgroundColor: "red",
-          color: "white",
-          border: "none",
-          padding: "6px 12px",
-          borderRadius: "5px",
-          cursor: "pointer"
-        }}
-      >
-        Delete
-      </button>
+  onClick={() => deleteRecipe(recipe._id)}
+  style={{
+    background: "linear-gradient(to right, #ff4b2b, #ff416c)",
+    color: "white",
+    border: "none",
+    padding: "6px 12px",
+    borderRadius: "8px",
+    cursor: "pointer"
+  }}
+>
+  Delete
+</button>
     </div>
   ))}
    </div>
