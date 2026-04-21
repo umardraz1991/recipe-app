@@ -143,7 +143,22 @@ function App() {
             }}>
               <h3>{recipe.name}</h3>
               <p>{recipe.ingredients}</p>
-              <p><b>{recipe.category}</b></p>
+              <p style={{
+  display: "inline-block",
+  padding: "5px 10px",
+  borderRadius: "15px",
+  backgroundColor:
+    recipe.category === "Healthy" ? "green" :
+    recipe.category === "Fast Food" ? "red" :
+    recipe.category === "Dessert" ? "purple" :
+    recipe.category === "Italian" ? "orange" :
+    "#007bff",
+  color: "white",
+  fontSize: "12px",
+  marginBottom: "10px"
+}}>
+  {recipe.category || "General"}
+</p>
 
               <button onClick={() => {
                 setEditingId(recipe._id);
