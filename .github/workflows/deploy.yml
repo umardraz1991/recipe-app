@@ -1,0 +1,43 @@
+name: Build and deploy Node.js app to Azure
+
+on:
+  push:
+    branches:
+      - before-azure-deploy
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # 🔥 FRONTEND BUILD
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+      # 🔥 COPY BUILD TO BACKEND
+      - name: Copy build to backend
+        run: |
+          cp -r frontend/build backend/build
+
+      # 🔥 BACKEND INSTALL
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+
+      # 🔥 DEPLOY
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: recipe-app
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .

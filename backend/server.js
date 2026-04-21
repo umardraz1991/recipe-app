@@ -43,6 +43,7 @@ app.put("/recipes/:id", async (req, res) => {
   res.json(updated);
 });
 
+// ✅ Serve React (FINAL CORRECT VERSION)
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
 
 app.use((req, res) => {
