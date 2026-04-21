@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 
   next();
 });
-
+app.use(express.json());
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB Connected"))
