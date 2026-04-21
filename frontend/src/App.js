@@ -1,327 +1,118 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 
 function App() {
-  const API_URL = "https://recipe-app-azgjcdbddfccucj.germanywestcentral-01.azurewebsites.net";
   const [error, setError] = useState("");
   const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
   const [recipes, setRecipes] = useState([]);
-  const [editingId, setEditingId] = useState(null);
-  const [search, setSearch] = useState("");
-  const [isReversed, setIsReversed] = useState(false);
-  // fetch recipes
+
+  // ✅ FETCH RECIPES (NO API_URL)
   const fetchRecipes = async () => {
-   try {
-    setLoading(true);
-    setError("");
-    const res = await axios.get(`${API_URL}/recipes`);
-    setRecipes(res.data);
-   } catch (err) {
-    setError("Failed to fetch recipes");
-   } finally {
-    setLoading(false);
-   }
+    try {
+      setLoading(true);
+      setError("");
+      const res = await axios.get("/recipes");
+      setRecipes(res.data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to fetch recipes");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchRecipes();
   }, []);
 
-  // add recipe
+  // ✅ ADD RECIPE
   const addRecipe = async () => {
-if (!name || !ingredients) {
-  alert("Please fill all fields");
-  console.log("Search:", search);  
-  return;
-}
-    await axios.post(`${API_URL}/recipes`, {
-      name,
-      ingredients,
-      category,
-    });
-  alert("Recipe added successfully!");
-    setName("");
-    setIngredients("");
-    setCategory("");
-    fetchRecipes();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (!name || !ingredients) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    try {
+      await axios.post("/recipes", {
+        name,
+        ingredients,
+        category,
+      });
+
+      setName("");
+      setIngredients("");
+      setCategory("");
+      fetchRecipes();
+    } catch (err) {
+      console.error(err);
+      alert("Error adding recipe");
+    }
   };
 
-
-
-  // delete recipe
+  // ✅ DELETE
   const deleteRecipe = async (id) => {
-    await axios.delete(`${API_URL}/recipes/${id}`);
-    fetchRecipes();
+    try {
+      await axios.delete(`/recipes/${id}`);
+      fetchRecipes();
+    } catch (err) {
+      console.error(err);
+    }
   };
-
-const updateRecipe = async (id) => {
-  await axios.put(`${API_URL}/recipes/${id}`, {
-    name,
-    ingredients,
-    category,
-  });
-  setEditingId(null);
-  setName("");
-  setIngredients("");
-  setCategory("");
-  fetchRecipes();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
 
   return (
-    <div
-     style={{
-     minHeight: "100vh",
-     backgroundColor: "#f4f6f8",
-     padding: "40px"
-     }}
-    >
-    <div
-     style={{
-     maxWidth: "500px",
-     margin: "auto",
-     backgroundColor: "white",
-     padding: "25px",
-     borderRadius: "10px",
-     boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
-     }}
-    >    
-  <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
-  🍽 Recipe Manager
-</h1>
-  <h3 style={{ marginBottom: "10px" }}>
-  Add / Edit Recipe
-</h3>
-	{editingId && (
-  	 <p style={{ color: "blue", marginBottom: "10px" }}>
-    	   ✏️ Editing: {name} ({category})
-  	 </p>
-	)}
-<input
-  placeholder="Search recipes..."
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  style={{
-    padding: "10px",
-    width: "100%",
-    marginBottom: "10px",
-    borderRadius: "5px",
-    border: "1px solid #ccc"
-  }}
-/>
-
-<button
-  onClick={() => setSearch("")}
-  style={{
-    marginBottom: "15px",
-    padding: "5px 10px",
-    borderRadius: "5px",
-    cursor: "pointer"
-  }}
->
-  Clear Search
-</button>
+    <div style={{ padding: "40px" }}>
+      <h1>🍽 Recipe Manager</h1>
 
       <input
         placeholder="Recipe name"
-	autoFocus
-  	value={name}
-  	onChange={(e) => setName(e.target.value)}
-  	style={{
-    	padding: "10px",
-    	width: "100%",
-    	marginBottom: "10px",
-    	borderRadius: "5px",
-    	border: "1px solid #ccc"
-       }}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
+
       <br /><br />
 
       <input
-        placeholder="Ingredients (comma separated)"
-  	value={ingredients}
-  	onChange={(e) => setIngredients(e.target.value)}
-  	style={{
-    	padding: "10px",
-    	width: "100%",
-    	marginBottom: "15px",
-    	borderRadius: "5px",
-    	border: "1px solid #ccc"
-       }}
+        placeholder="Ingredients"
+        value={ingredients}
+        onChange={(e) => setIngredients(e.target.value)}
       />
+
       <br /><br />
 
-<select
-  value={category}
-  onChange={(e) => setCategory(e.target.value)}
-  style={{
-    padding: "10px",
-    width: "100%",
-    marginBottom: "15px",
-    borderRadius: "5px",
-    border: "1px solid #ccc"
-  }}
->
-  <option value="">Select Category</option>
-  <option value="Italian">Italian</option>
-  <option value="Healthy">Healthy</option>
-  <option value="Fast Food">Fast Food</option>
-  <option value="Dessert">Dessert</option>
-</select>
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="">Select Category</option>
+        <option value="Italian">Italian</option>
+        <option value="Healthy">Healthy</option>
+        <option value="Fast Food">Fast Food</option>
+        <option value="Dessert">Dessert</option>
+      </select>
 
-      <button
-  	onClick={editingId ? () => updateRecipe(editingId) : addRecipe}
-	disabled={!name || !ingredients}
-  	style={{
-    	padding: "10px",
-    	width: "100%",
-    	backgroundColor: "#28a745",
-    	color: "white",
-    	border: "none",
-    	borderRadius: "5px",
-    	marginBottom: "20px",
-    	cursor: "pointer",
-    	fontWeight: "bold"
-  	}}
-       >	
-  	{editingId ? "Update Recipe" : "Add Recipe"}
-       </button>
-	{editingId && (
-  	 <button
-   	  onClick={() => {
-          setEditingId(null);
-          setName("");
-          setIngredients("");
-        }}
-   	 style={{
-     	  marginTop: "10px",
-      	  padding: "8px",
-          width: "100%",
-          backgroundColor: "#6c757d",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer"
-    	}}
-       >
-          Cancel Edit
-       </button>
-)}
-      <hr style={{ margin: "20px 0" }} />
-<button
-  onClick={() => setIsReversed(!isReversed)}
-  style={{
-    marginBottom: "10px",
-    padding: "8px",
-    borderRadius: "5px",
-    cursor: "pointer"
-  }}
->
-  {isReversed ? "Show Newest First" : "Show Oldest First"}
-</button>
-      <h2 style={{ marginTop: "10px" }}>Recipes ({recipes.length})</h2>
+      <br /><br />
+
+      <button onClick={addRecipe}>Add Recipe</button>
+
+      <hr />
+
+      <h2>Recipes ({recipes.length})</h2>
+
       {error && <p style={{ color: "red" }}>{error}</p>}
-      {loading && <p>Loading recipes...</p>}
-      {recipes.filter(r =>
-  r.name.toLowerCase().includes(search.toLowerCase())
-).length === 0 && (
-  <p style={{ color: "#888", textAlign: "center" }}>
-   🔍 No recipes match your search
-  </p>
-)}
+      {loading && <p>Loading...</p>}
 
+      {recipes.map((recipe) => (
+        <div key={recipe._id}>
+          <h3>{recipe.name}</h3>
+          <p>{recipe.ingredients}</p>
+          <p>{recipe.category}</p>
 
-      {recipes
-	.filter((recipe) =>
-    	 recipe.name?.toLowerCase().includes(search.toLowerCase())
- 	 )
-        .slice() // copy array
-        .filter((recipe) => {
-  const matchesSearch = recipe.name?.toLowerCase().includes(search.toLowerCase()) ||
-  recipe.ingredients?.toLowerCase().includes(search.toLowerCase());
-
-  const matchesCategory =
-    categoryFilter === "All" ||
-    recipe.category === categoryFilter;
-
-  return matchesSearch && matchesCategory;
-})
-.slice()
-[isReversed ? "reverse" : "sort"]((a, b) => 0)
- 	.map((recipe) => (
-        <div
-  	 key={recipe._id}
- 	 style={{
-   	 marginRight: "10px",
-  	 padding: "5px 10px",
- 	 borderRadius: "5px",
- 	 border: "none",
- 	 backgroundColor: "#007bff",
- 	 color: "white",
- 	 cursor: "pointer"
-  	}}
-        >
-          <h3 style={{ margin: "0 0 5px 0" }}>{recipe.name}</h3>
-	  <p style={{ margin: "0 0 10px 0", color: "#555" }}>{recipe.ingredients}</p>
-	  <p style={{ 
-display: "inline-block",
-    padding: "5px 10px",
-    backgroundColor:      
-      recipe.category === "Healthy" ? "green" :
-      recipe.category === "Fast Food" ? "red" :
-      recipe.category === "Dessert" ? "purple" :
-      recipe.category === "Italian" ? "orange" : 
-      "#007bff",
-    color: "white",
-    borderRadius: "15px",
-    fontSize: "12px",
-    marginBottom: "10px"
-  }}
->
-  {recipe.category || "General"}
-</p>
-
-
-          <button
-  	    onClick={() => {
-    	    setEditingId(recipe._id);
-    	    setName(recipe.name);
-    	    setIngredients(recipe.ingredients);
-	    setCategory(recipe.category || "");
-	}}
-	>
-  	Edit
-	</button>
-          <button
-            onClick={() => {
-    if (window.confirm("Are you sure you want to delete this recipe?")) {
-      deleteRecipe(recipe._id);
-    }
-  }}
-            style={{ backgroundColor: "red", color: "white" }}
-          >
+          <button onClick={() => deleteRecipe(recipe._id)}>
             Delete
           </button>
         </div>
       ))}
-<hr />
-
-<p style={{
-  textAlign: "center",
-  marginTop: "20px",
-  color: "#777",
-  fontSize: "13px"
-}}>
-  © 2026 Recipe Manager | Built with React, Node.js & MongoDB
-</p>
-    </div>
     </div>
   );
 }
