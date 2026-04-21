@@ -5,20 +5,18 @@ const path = require("path");
 const app = express();
 
 // ✅ VERY IMPORTANT (MUST BE FIRST)
-app.use(express.json());
+//app.use(express.json());
 
 // ✅ CORS (simple + safe)
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
+const cors = require("cors");
 
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type"],
+}));
 
-  next();
-});
+app.use(express.json());
 
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URL)
