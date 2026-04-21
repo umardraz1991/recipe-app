@@ -1,39 +1,31 @@
-name: Deploy to Azure
+name: Build and deploy to Azure
 
 on:
   push:
     branches:
-      - main
-
-env:
-  AZURE_WEBAPP_NAME: your-app-name
-  ACR_NAME: youracrname
+      - main   # or your branch
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Login to ACR
-      run: |
-        az acr login --name $ACR_NAME
+      - name: Install and build frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
 
-    - name: Build and Push Docker Image
-      run: |
-        docker build -t $ACR_NAME.azurecr.io/receipt-app:${{ github.sha }} .
-        docker push $ACR_NAME.azurecr.io/receipt-app:${{ github.sha }}
-
-    - name: Deploy to Web App
-      run: |
-        az webapp config container set \
-          --name $AZURE_WEBAPP_NAME \
-          --resource-group YOUR_RESOURCE_GROUP \
-          --docker-custom-image-name $ACR_NAME.azurecr.io/receipt-app:${{ github.sha }}
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: recipe-app-azgjcdgbddfccucj
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: frontend/build
