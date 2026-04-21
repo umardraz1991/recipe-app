@@ -12,11 +12,19 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [editingId, setEditingId] = useState(null);
   const [isReversed, setIsReversed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchRecipes = async () => {
+  try {
+    setLoading(true);
     const res = await axios.get("/recipes");
     setRecipes(res.data);
-  };
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchRecipes();
@@ -52,7 +60,14 @@ function App() {
   };
 
   return (
-    <div style={{ background: "#f4f6f8", minHeight: "100vh", padding: "40px" }}>
+    return (
+  <div
+    style={{
+      background: "linear-gradient(to right, #e3f2fd, #fce4ec)",
+      minHeight: "100vh",
+      padding: "40px"
+    }}
+  >
       <div style={{
         maxWidth: "600px",
         margin: "auto",
@@ -144,6 +159,19 @@ function App() {
         </button>
 
         <h2>Recipes ({recipes.length})</h2>
+		{loading && (
+  <div style={{ textAlign: "center", marginTop: "20px" }}>
+    <div style={{
+      width: "40px",
+      height: "40px",
+      border: "5px solid #ccc",
+      borderTop: "5px solid #007bff",
+      borderRadius: "50%",
+      animation: "spin 1s linear infinite",
+      margin: "auto"
+    }} />
+  </div>
+)}
 
         {recipes
           .filter(r =>
