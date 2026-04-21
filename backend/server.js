@@ -4,21 +4,10 @@ const path = require("path");
 
 const app = express();
 
-// ✅ VERY IMPORTANT (MUST BE FIRST)
-//app.use(express.json());
-
-// ✅ CORS (simple + safe)
-const cors = require("cors");
-
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type"],
-}));
-app.options("*", cors());
+// ✅ ONLY THIS
 app.use(express.json());
 
-// Connect MongoDB
+// Mongo
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
@@ -40,28 +29,15 @@ app.get("/recipes", async (req, res) => {
 
 app.post("/recipes", async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-
-    if (!req.body || !req.body.name || !req.body.ingredients) {
-      return res.status(400).json({ error: "Invalid data" });
-    }
-
-    const newRecipe = new Recipe({
-      name: req.body.name,
-      ingredients: req.body.ingredients,
-      category: req.body.category || "General",
-    });
-
+    const newRecipe = new Recipe(req.body);
     await newRecipe.save();
-
-    res.status(201).json(newRecipe);
+    res.json(newRecipe);
   } catch (err) {
-    console.error("POST ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// Serve React
+// React
 app.use(express.static(path.join(__dirname, "..", "build")));
 
 app.use((req, res) => {
