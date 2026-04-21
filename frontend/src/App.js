@@ -178,74 +178,93 @@ function App() {
   </div>
 )}
 
-        {recipes
-          .filter(r =>
-            r.name.toLowerCase().includes(search.toLowerCase()) ||
-            r.ingredients.toLowerCase().includes(search.toLowerCase())
-          )
-          .filter(r =>
-            categoryFilter === "All" || r.category === categoryFilter
-          )
-          .slice()
-          [isReversed ? "reverse" : "sort"]((a, b) => 0)
-          .map(recipe => (
-            <div
-  key={recipe._id}
-  style={{
-    marginBottom: "15px",
-    padding: "15px",
-    borderRadius: "12px",
-    backgroundColor: "white",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-    transition: "0.3s",
-    cursor: "pointer"
-  }}
-  onMouseEnter={(e) => {
-    e.currentTarget.style.transform = "scale(1.02)";
-  }}
-  onMouseLeave={(e) => {
-    e.currentTarget.style.transform = "scale(1)";
-  }}
->
-              <h3>{recipe.name}</h3>
-              <p>{recipe.ingredients}</p>
-              <p style={{
-  display: "inline-block",
-  padding: "5px 10px",
-  borderRadius: "15px",
-  backgroundColor:
-    recipe.category === "Healthy" ? "green" :
-    recipe.category === "Fast Food" ? "red" :
-    recipe.category === "Dessert" ? "purple" :
-    recipe.category === "Italian" ? "orange" :
-    "#007bff",
-  color: "white",
-  fontSize: "12px",
-  marginBottom: "10px"
-}}>
-  {recipe.category || "General"}
-</p>
+{recipes
+  .filter(r =>
+    r.name.toLowerCase().includes(search.toLowerCase()) ||
+    r.ingredients.toLowerCase().includes(search.toLowerCase())
+  )
+  .filter(r =>
+    categoryFilter === "All" || r.category === categoryFilter
+  )
+  .slice()
+  [isReversed ? "reverse" : "sort"]((a, b) => 0)
+  .map(recipe => (
+    <div
+      key={recipe._id}
+      style={{
+        marginBottom: "15px",
+        padding: "15px",
+        borderRadius: "12px",
+        backgroundColor: "white",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        transition: "0.3s",
+        cursor: "pointer"
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "scale(1.02)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "scale(1)";
+      }}
+    >
+      <h3>{recipe.name}</h3>
 
-              <button onClick={() => {
-                setEditingId(recipe._id);
-                setName(recipe.name);
-                setIngredients(recipe.ingredients);
-                setCategory(recipe.category);
-              }}>
-                Edit
-              </button>
+      <p>{recipe.ingredients}</p>
 
-              <button
-                onClick={() => deleteRecipe(recipe._id)}
-                style={{ marginLeft: "10px", background: "red", color: "white" }}
-              >
-                Delete
-              </button>
-            </div>
-          ))}
-      </div>
+      <p style={{
+        display: "inline-block",
+        padding: "5px 10px",
+        borderRadius: "15px",
+        backgroundColor:
+          recipe.category === "Healthy" ? "green" :
+          recipe.category === "Fast Food" ? "red" :
+          recipe.category === "Dessert" ? "purple" :
+          recipe.category === "Italian" ? "orange" :
+          "#007bff",
+        color: "white",
+        fontSize: "12px",
+        marginBottom: "10px"
+      }}>
+        {recipe.category || "General"}
+      </p>
+
+      <button
+        onClick={() => {
+          setEditingId(recipe._id);
+          setName(recipe.name);
+          setIngredients(recipe.ingredients);
+          setCategory(recipe.category || "");
+        }}
+        style={{
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "none",
+          padding: "6px 12px",
+          borderRadius: "5px",
+          cursor: "pointer",
+          marginRight: "10px"
+        }}
+      >
+        Edit
+      </button>
+
+      <button
+        onClick={() => deleteRecipe(recipe._id)}
+        style={{
+          backgroundColor: "red",
+          color: "white",
+          border: "none",
+          padding: "6px 12px",
+          borderRadius: "5px",
+          cursor: "pointer"
+        }}
+      >
+        Delete
+      </button>
+    </div>
+  ))}
+   </div>
     </div>
   );
 }
-
-export default App;
+  export default App;
