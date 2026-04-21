@@ -62,7 +62,7 @@ function App() {
   return (
   <div
     style={{
-      background: "linear-gradient(to right, #e3f2fd, #fce4ec)",
+      background: "linear-gradient(135deg, #667eea, #764ba2)",
       minHeight: "100vh",
       padding: "40px"
     }}
@@ -99,7 +99,14 @@ function App() {
           placeholder="Search..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+          style={{
+    width: "100%",
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    outline: "none"
+  }}
         />
 
         {/* FILTER */}
@@ -120,12 +127,28 @@ function App() {
           placeholder="Recipe name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+		  style={{
+    width: "100%",
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    outline: "none"
+  }}
         />
 
         <input
           placeholder="Ingredients"
           value={ingredients}
           onChange={(e) => setIngredients(e.target.value)}
+		  style={{
+    width: "100%",
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    outline: "none"
+  }}
         />
 
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
@@ -152,7 +175,7 @@ function App() {
 >
   {editingId ? "Update Recipe" : "Add Recipe"}
 </button>
-)}
+
         <hr />
 
         {/* SORT */}
