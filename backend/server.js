@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 const path = require("path");
 
 const app = express();
 
-// Middleware
+// ✅ VERY IMPORTANT (MUST BE FIRST)
+app.use(express.json());
+
+// ✅ CORS (simple + safe)
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
@@ -17,7 +19,7 @@ app.use((req, res, next) => {
 
   next();
 });
-app.use(express.json());
+
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB Connected"))
@@ -32,7 +34,7 @@ const recipeSchema = new mongoose.Schema({
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
 
-// API routes
+// Routes
 app.get("/recipes", async (req, res) => {
   const recipes = await Recipe.find();
   res.json(recipes);
@@ -42,44 +44,24 @@ app.post("/recipes", async (req, res) => {
   try {
     console.log("BODY:", req.body);
 
-    if (!req.body.name || !req.body.ingredients) {
-      return res.status(400).json({ error: "Missing fields" });
-    }
-
-    const newRecipe = new Recipe({
-      name: req.body.name,
-      ingredients: req.body.ingredients,
-      category: req.body.category || "General",
-    });
-
+    const newRecipe = new Recipe(req.body);
     await newRecipe.save();
 
     res.json(newRecipe);
-  } catch (error) {
-    console.error("POST ERROR:", error);
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 });
 
-app.delete("/recipes/:id", async (req, res) => {
-  await Recipe.findByIdAndDelete(req.params.id);
-  res.json({ message: "Deleted" });
-});
-
-app.put("/recipes/:id", async (req, res) => {
-  const updated = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updated);
-});
-
-// Serve React build
+// Serve React
 app.use(express.static(path.join(__dirname, "..", "build")));
 
-// ✅ SAFE fallback (NO "*")
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "..", "build", "index.html"));
 });
 
-// Start server
+// Start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
