@@ -44,10 +44,10 @@ app.put("/recipes/:id", async (req, res) => {
 });
 
 // ✅ Serve React
-app.use(express.static(path.join(__dirname, "..", "build")));
+app.use(express.static(path.join(__dirname, "build")));
 
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 // ✅ PORT (CRITICAL FOR AZURE)
