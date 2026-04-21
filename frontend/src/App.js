@@ -63,6 +63,11 @@ function App() {
       }}>
 
         <h1 style={{ textAlign: "center" }}>🍽 Recipe Manager</h1>
+		{editingId && (
+  <p style={{ color: "blue", marginBottom: "10px" }}>
+    ✏️ Editing: {name}
+  </p>
+)}
 		{message && (
   <p style={{ color: "green", textAlign: "center" }}>
     {message}
@@ -114,7 +119,23 @@ function App() {
         <button onClick={editingId ? () => updateRecipe(editingId) : addRecipe}>
           {editingId ? "Update Recipe" : "Add Recipe"}
         </button>
-
+{editingId && (
+  <button
+    onClick={() => {
+      setEditingId(null);
+      setName("");
+      setIngredients("");
+      setCategory("");
+    }}
+    style={{
+      marginTop: "10px",
+      backgroundColor: "#6c757d",
+      color: "white"
+    }}
+  >
+    Cancel Edit
+  </button>
+)}
         <hr />
 
         {/* SORT */}
