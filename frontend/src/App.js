@@ -69,7 +69,8 @@ const addRecipe = async () => {
     category,
   });
 
-  alert("Recipe added successfully!");
+  setMessage("✅ Recipe added!");
+setTimeout(() => setMessage(""), 2000);
   setName("");
   setIngredients("");
   setCategory("");
